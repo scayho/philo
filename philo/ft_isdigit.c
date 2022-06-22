@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 14:04:18 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/21 14:01:46 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:03:25 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_isdigit(char	*str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] <= '0' || str[i] >= '9')
+		if (str[i] < '0' || str[i] > '9')
 			return (0);
 		i++;
 	}

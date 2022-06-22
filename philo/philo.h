@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 12:40:37 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/21 18:13:53 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:06:32 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int		ft_putstr(char *str);
 int		ft_strlen(const char	*str);
 int		ft_atoi(const char *str);
 int		ft_isdigit(char	*str);
-void	parsing(int arc, char	**arv, t_data *midgard);
+int		parsing(int arc, char	**arv, t_data *midgard);
 
 #endif
