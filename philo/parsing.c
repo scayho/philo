@@ -6,13 +6,13 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 13:40:30 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/21 14:03:14 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/21 17:34:42 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	parsing(int arc, char	**arv)
+void	parsing(int arc, char	**arv, t_data *midgard)
 {
 	arc--;
 	while (arc > 0)
@@ -29,4 +29,11 @@ void	parsing(int arc, char	**arv)
 		}
 		arc--;
 	}
+	midgard->nb_philo = ft_atoi(arv[1]);
+	midgard->tdie = ft_atoi(arv[2]);
+	midgard->teat = ft_atoi(arv[3]);
+	midgard->tsleep = ft_atoi(arv[4]);
+	midgard->nbeat = 0;
+	if (arc == 6)
+		midgard->nbeat = ft_atoi(arv[5]);
 }

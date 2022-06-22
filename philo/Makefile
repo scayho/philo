@@ -6,7 +6,7 @@
 #    By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 15:26:20 by abelahce          #+#    #+#              #
-#    Updated: 2022/06/21 14:00:46 by abelahce         ###   ########.fr        #
+#    Updated: 2022/06/21 18:36:43 by abelahce         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ HEADER=philo.h
 
 UTILS=utils.o
 
-CFLAGS=-Wall -Wextra -Werror -g
+CFLAGS=-Wall -Wextra -Werror -g -pthread 
 
 NAME=philo
 
