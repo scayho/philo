@@ -6,7 +6,7 @@
 #    By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 15:26:20 by abelahce          #+#    #+#              #
-#    Updated: 2022/06/21 18:36:43 by abelahce         ###   ########.fr        #
+#    Updated: 2022/06/22 21:36:15 by abelahce         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC := utils.c	\
 		parsing.c	\
 		ft_atoi.c	\
 		ft_isdigit.c	\
+		philo.c	\
 
 OBJ := $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 12:39:49 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/22 15:08:54 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/22 21:35:52 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	main(int arc, char **arv)
 	midgard = malloc(sizeof(t_data));
 	if (midgard == NULL)
 		return (-1);
-	if (!parsing(arc, arv, midgard));
+	if (!parsing(arc, arv, midgard))
 		return (0);
+	start_philo(midgard);
 	return (0);
 }

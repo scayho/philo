@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 12:40:37 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/22 15:06:32 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/22 21:52:36 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data{
 	int		teat;
 	int		tsleep;
 	int		nbeat;
+	int		reste;
 }		t_data;
 
 // typedef struct s_philo
@@ -41,5 +42,6 @@ int		ft_strlen(const char	*str);
 int		ft_atoi(const char *str);
 int		ft_isdigit(char	*str);
 int		parsing(int arc, char	**arv, t_data *midgard);
+void	start_philo(t_data *midgard);
 
 #endif
