@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 12:39:49 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/22 21:35:52 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/06/23 20:03:28 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int arc, char **arv)
 		return (-1);
 	if (!parsing(arc, arv, midgard))
 		return (0);
-	start_philo(midgard);
+	if (!start_philo(midgard))
+		return (0);
 	return (0);
 }

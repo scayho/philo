@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 21:36:18 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/23 15:34:52 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:26:49 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,68 @@ int	wakt(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	*philothing(void	*arg)
+void	sleeping(t_philo	*philo)
 {
-	int			i;
-	static int	j;
+	long long	ok;
 
-	i = 0;
-	(void)arg;
-	printf("j = {%d}", ++j);
-	while (i < 200)
+	ok = wakt();
+	while (wakt() - ok < philo->teat)
 	{
-		printf("[%d]	", i);
-		i++;
 	}
-	printf("\n");
-	i++;
+}
+
+void	routine(t_philo	*philo)
+{
+	while (1)
+	{
+		if (philo->index % 2)
+			printf(" time is %d {%d} is thinking \n", wakt() - philo->start, philo->index);
+		if (!philo->index % 2)
+			printf(" time is %d {%d} is eating \n", wakt() - philo->start, philo->index);
+		sleeping(philo);
+		if (!philo->index % 2)
+			printf(" time is %d {%d} is thinking \n", wakt() - philo->start, philo->index);
+		if (philo->index % 2)
+			printf(" time is %d {%d} is eating \n", wakt() - philo->start, philo->index);
+	}
+}
+
+void	*philothing(void	*ptr)
+{
+	t_philo	*philo;
+
+	philo = ptr;
+	while (philo->maxeated > philo->nbeat || philo->death)
+		routine(philo);
 	return (NULL);
 }
 
-void	start_philo(t_data *midgard)
+int	start_philo(t_data *midgard)
 {
-	pthread_t	th;
+	pthread_t	*th;
 	int			i;
+	int			nb;
 
 	i = 0;
-	while (i < midgard->nb_philo)
+	th = malloc (sizeof(pthread_t) * midgard->nb_philo);
+	if (!th)
+		exit (0);
+	pthread_mutex_init(&midgard->bolisi, NULL);
+	nb = midgard->nb_philo;
+	while (i < nb)
 	{
-		pthread_create(&th, NULL, philothing, NULL);
-		sleep(1);
+		if (pthread_create(&th[i], NULL, &philothing, &midgard->philo[i]))
+			return (0);
 		i++;
 	}
+	while (1)
+	{
+		if (midgard->close == 1)
+			break ;
+	}
+	// pthread_detach(*th);
+	return (1);
 }

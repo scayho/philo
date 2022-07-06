@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 12:40:37 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/22 21:52:36 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:26:29 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,33 @@
 # include <sys/time.h>
 # include "philo.h"
 
+typedef struct philo
+{
+	int				index;
+	int				eated;
+	int				maxeated;
+	int				nbeat;
+	int				death;
+	int				start;
+	int				teat;
+	pthread_mutex_t	shopsticks;
+	pthread_mutex_t	call;
+}	t_philo;
+
 typedef struct s_data{
-	char	*smito;
-	int		nb_philo;
-	int		tdie;
-	int		teat;
-	int		tsleep;
-	int		nbeat;
-	int		reste;
+	char			*smito;
+	int				nb_philo;
+	int				tdie;
+	int				teat;
+	int				tsleep;
+	int				nbeat;
+	int				maxeat;
+	int				reste;
+	int				death;
+	int				start;
+	int				close;
+	t_philo			*philo;
+	pthread_mutex_t	bolisi;
 }		t_data;
 
 // typedef struct s_philo
@@ -42,6 +61,7 @@ int		ft_strlen(const char	*str);
 int		ft_atoi(const char *str);
 int		ft_isdigit(char	*str);
 int		parsing(int arc, char	**arv, t_data *midgard);
-void	start_philo(t_data *midgard);
+int		start_philo(t_data *midgard);
+int		wakt(void);
 
 #endif
