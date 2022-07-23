@@ -32,9 +32,6 @@ void	indexing(t_data	*midgard)
 	int	i;
 
 	i = 0;
-	midgard->philo = malloc (midgard->nb_philo * sizeof(t_philo));
-	if (!midgard->philo)
-		exit (0);
 	while (i < midgard->nb_philo)
 	{
 		midgard->philo[i].index = i;
@@ -44,6 +41,8 @@ void	indexing(t_data	*midgard)
 		midgard->philo[i].maxeated = midgard->maxeat;
 		midgard->philo[i].eated = wakt();
 		midgard->philo[i].start = wakt();
+		midgard->philo[i].total = midgard->nb_philo;
+		midgard->philo[i].call = midgard->call;
 		i++;
 	}
 }

@@ -12,7 +12,23 @@
 
 #include "philo.h"
 
-int	wakt(void)
+void	dormir(long long	nb)
+{
+	long long start;
+	long long end;
+
+	start = wakt ();
+	end = wakt();
+	while (1)
+	{
+		if (end - start < nb)
+			break ;
+		end = wakt();
+	}
+
+}
+
+long long	wakt(void)
 {
 	struct timeval	time;
 
@@ -20,30 +36,51 @@ int	wakt(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	sleeping(t_philo	*philo)
+void	printing(char	*str, t_philo *philo)
 {
-	long long	ok;
-
-	ok = wakt();
-	while (wakt() - ok < philo->teat)
-	{
-	}
+	pthread_mutex_lock(&philo->call);	
+	printf("{%lld} [%d] is %s\n", wakt() - philo->start, philo->index, str);
+	pthread_mutex_unlock(&philo->call);
 }
 
-void	routine(t_philo	*philo)
+void	eating(t_philo	*philo)
+{
+	pthread_mutex_lock(&(philo->shopsticks));
+	printing("ticking right shopstick", philo);
+	pthread_mutex_lock(&(philo->rshopsticks));
+	printing("ticking left shopstick", philo);
+	printing("eating", philo);
+	dormir(philo->teat);
+	pthread_mutex_unlock(&(philo->shopsticks));
+	pthread_mutex_unlock(&(philo->rshopsticks));
+}
+
+void	sleeping(t_philo *philo)
+{
+	printing("sleeping", philo);
+	dormir(philo->teat);
+}
+
+void	thinking(t_philo *philo)
+{
+	printing("thinking about existens", philo);
+}
+
+void	philocasting(t_philo *philo)
 {
 	while (1)
 	{
-		if (philo->index % 2)
-			printf(" time is %d {%d} is thinking \n", wakt() - philo->start, philo->index);
-		if (!philo->index % 2)
-			printf(" time is %d {%d} is eating \n", wakt() - philo->start, philo->index);
+		eating(philo);
 		sleeping(philo);
-		if (!philo->index % 2)
-			printf(" time is %d {%d} is thinking \n", wakt() - philo->start, philo->index);
-		if (philo->index % 2)
-			printf(" time is %d {%d} is eating \n", wakt() - philo->start, philo->index);
+		thinking(philo);
 	}
+}
+
+void	philosophercult(t_philo	*philo)
+{
+	if (!philo->index % 2)
+		sleeping(philo);
+	philocasting(philo);
 }
 
 void	*philothing(void	*ptr)
@@ -51,26 +88,29 @@ void	*philothing(void	*ptr)
 	t_philo	*philo;
 
 	philo = ptr;
-	while (philo->maxeated > philo->nbeat || philo->death)
-		routine(philo);
+	philosophercult(philo);
 	return (NULL);
 }
 
 int	start_philo(t_data *midgard)
 {
-	pthread_t	*th;
 	int			i;
 	int			nb;
 
 	i = 0;
-	th = malloc (sizeof(pthread_t) * midgard->nb_philo);
-	if (!th)
-		exit (0);
-	pthread_mutex_init(&midgard->bolisi, NULL);
+	pthread_mutex_init(&midgard->call, NULL);
 	nb = midgard->nb_philo;
+	midgard->th = malloc (sizeof(pthread_t) * midgard->nb_philo);
+	if (!midgard->th)
+		exit (0);
 	while (i < nb)
 	{
-		if (pthread_create(&th[i], NULL, &philothing, &midgard->philo[i]))
+		pthread_mutex_init(&midgard->forks[i], NULL);
+		midgard->philo[i].shopsticks = midgard->forks[i];
+		midgard->philo[i].rshopsticks = midgard->forks[i + 1];
+		if (i == nb - 1)
+			midgard->philo[i].rshopsticks = midgard->forks[0];
+		if (pthread_create(&midgard->th[i], NULL, &philothing, &midgard->philo[i]))
 			return (0);
 		i++;
 	}

@@ -27,26 +27,30 @@ typedef struct philo
 	int				maxeated;
 	int				nbeat;
 	int				death;
-	int				start;
+	long long			start;
 	int				teat;
-	pthread_mutex_t	shopsticks;
-	pthread_mutex_t	call;
+	int				total;
+	pthread_mutex_t			shopsticks;
+	pthread_mutex_t 		rshopsticks;
+	pthread_mutex_t			call;
 }	t_philo;
 
 typedef struct s_data{
-	char			*smito;
+	char				*smito;
 	int				nb_philo;
 	int				tdie;
 	int				teat;
 	int				tsleep;
 	int				nbeat;
+	pthread_mutex_t			forks[200];
 	int				maxeat;
 	int				reste;
 	int				death;
 	int				start;
+	pthread_t			*th;
 	int				close;
-	t_philo			*philo;
-	pthread_mutex_t	bolisi;
+	t_philo				philo[200];
+	pthread_mutex_t			call;
 }		t_data;
 
 // typedef struct s_philo
@@ -62,6 +66,6 @@ int		ft_atoi(const char *str);
 int		ft_isdigit(char	*str);
 int		parsing(int arc, char	**arv, t_data *midgard);
 int		start_philo(t_data *midgard);
-int		wakt(void);
+long long	wakt(void);
 
 #endif
