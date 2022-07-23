@@ -19,13 +19,10 @@ void	dormir(long long	nb)
 
 	start = wakt ();
 	end = wakt();
-	while (1)
+	while (end - start < nb)
 	{
-		if (end - start < nb)
-			break ;
 		end = wakt();
 	}
-
 }
 
 long long	wakt(void)
@@ -106,6 +103,11 @@ int	start_philo(t_data *midgard)
 	while (i < nb)
 	{
 		pthread_mutex_init(&midgard->forks[i], NULL);
+		i++;
+	}
+	i = 0;
+	while (i < nb)
+	{
 		midgard->philo[i].shopsticks = midgard->forks[i];
 		midgard->philo[i].rshopsticks = midgard->forks[i + 1];
 		if (i == nb - 1)
