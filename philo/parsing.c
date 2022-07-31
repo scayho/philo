@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	atoing(t_data *midgard, char **arv, int arc)
+void	atoing(t_data *midgard, char **arv, int i)
 {
 	midgard->nb_philo = ft_atoi(arv[1]);
 	midgard->tdie = ft_atoi(arv[2]);
@@ -21,10 +21,8 @@ void	atoing(t_data *midgard, char **arv, int arc)
 	midgard->nbeat = 0;
 	midgard->maxeat = 0;
 	midgard->death = 1;
-	if (arc == 6)
+	if (i == 6)
 		midgard->maxeat = ft_atoi(arv[5]);
-	else
-		midgard->maxeat = midgard->maxeat + 1;
 }
 
 void	indexing(t_data	*midgard)
@@ -41,14 +39,17 @@ void	indexing(t_data	*midgard)
 		midgard->philo[i].maxeated = midgard->maxeat;
 		midgard->philo[i].eated = wakt();
 		midgard->philo[i].start = wakt();
-		midgard->philo[i].total = midgard->nb_philo;
-		midgard->philo[i].call = midgard->call;
+		midgard->philo[i].total = 0;
+		midgard->philo[i].call = &(midgard->ccall);
 		i++;
 	}
 }
 
 int	parsing(int arc, char	**arv, t_data *midgard)
 {
+	int i;
+
+	i = arc;
 	arc--;
 	while (arc > 0)
 	{
@@ -67,7 +68,13 @@ int	parsing(int arc, char	**arv, t_data *midgard)
 	if (ft_atoi(arv[1]) < 0 || ft_atoi(arv[1]) < 0 || ft_atoi(arv[1]) < 0
 		|| ft_atoi(arv[1]) < 0)
 		return (0);
-	atoing(midgard, arv, arc);
+	midgard->forks = malloc (sizeof(pthread_mutex_t) * ft_atoi(arv[1]));
+	if (!midgard->forks)
+		return (0);
+	midgard->philo = malloc (sizeof (t_philo) * atoi(arv[1]));
+	if (!midgard->philo)
+		return (0);
+	atoing(midgard, arv, i);
 	indexing(midgard);
 	return (1);
 }

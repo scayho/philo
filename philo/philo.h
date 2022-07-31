@@ -30,9 +30,9 @@ typedef struct philo
 	long long			start;
 	int				teat;
 	int				total;
-	pthread_mutex_t			shopsticks;
-	pthread_mutex_t 		rshopsticks;
-	pthread_mutex_t			call;
+	pthread_mutex_t			*shopsticks;
+	pthread_mutex_t 		*rshopsticks;
+	pthread_mutex_t			*call;
 }	t_philo;
 
 typedef struct s_data{
@@ -42,15 +42,15 @@ typedef struct s_data{
 	int				teat;
 	int				tsleep;
 	int				nbeat;
-	pthread_mutex_t			forks[200];
+	pthread_mutex_t			*forks;
 	int				maxeat;
 	int				reste;
 	int				death;
 	int				start;
 	pthread_t			*th;
 	int				close;
-	t_philo				philo[200];
-	pthread_mutex_t			call;
+	t_philo				*philo;
+	pthread_mutex_t			ccall;
 }		t_data;
 
 // typedef struct s_philo

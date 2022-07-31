@@ -15,14 +15,11 @@
 void	dormir(long long	nb)
 {
 	long long start;
-	long long end;
 
 	start = wakt ();
-	end = wakt();
-	while (end - start < nb)
-	{
-		end = wakt();
-	}
+	usleep((nb * 1000) * 0.95);
+	while (wakt() - start < nb)
+		usleep(100);
 }
 
 long long	wakt(void)
@@ -35,21 +32,21 @@ long long	wakt(void)
 
 void	printing(char	*str, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->call);	
-	printf("{%lld} [%d] is %s\n", wakt() - philo->start, philo->index, str);
-	pthread_mutex_unlock(&philo->call);
+	pthread_mutex_lock(philo->call);	
+	printf("{%lld} [%d] is %s\n", wakt() - philo->start, philo->index + 1, str);
+	pthread_mutex_unlock(philo->call);
 }
 
 void	eating(t_philo	*philo)
 {
-	pthread_mutex_lock(&(philo->shopsticks));
-	printing("ticking right shopstick", philo);
-	pthread_mutex_lock(&(philo->rshopsticks));
-	printing("ticking left shopstick", philo);
+	pthread_mutex_lock(philo->shopsticks);
+	printing("taking left shopstick", philo);
+	pthread_mutex_lock(philo->rshopsticks);
+	printing("taking right shopstick", philo);
 	printing("eating", philo);
 	dormir(philo->teat);
-	pthread_mutex_unlock(&(philo->shopsticks));
-	pthread_mutex_unlock(&(philo->rshopsticks));
+	pthread_mutex_unlock(philo->shopsticks);
+	pthread_mutex_unlock(philo->rshopsticks);
 }
 
 void	sleeping(t_philo *philo)
@@ -68,6 +65,9 @@ void	philocasting(t_philo *philo)
 	while (1)
 	{
 		eating(philo);
+		philo->total++;
+		if (philo->total >= philo->maxeated)
+			break ;
 		sleeping(philo);
 		thinking(philo);
 	}
@@ -75,8 +75,8 @@ void	philocasting(t_philo *philo)
 
 void	philosophercult(t_philo	*philo)
 {
-	if (!philo->index % 2)
-		sleeping(philo);
+	if (philo->index % 2)
+		dormir(philo->teat);
 	philocasting(philo);
 }
 
@@ -95,7 +95,7 @@ int	start_philo(t_data *midgard)
 	int			nb;
 
 	i = 0;
-	pthread_mutex_init(&midgard->call, NULL);
+	pthread_mutex_init(&midgard->ccall, NULL);
 	nb = midgard->nb_philo;
 	midgard->th = malloc (sizeof(pthread_t) * midgard->nb_philo);
 	if (!midgard->th)
@@ -108,19 +108,20 @@ int	start_philo(t_data *midgard)
 	i = 0;
 	while (i < nb)
 	{
-		midgard->philo[i].shopsticks = midgard->forks[i];
-		midgard->philo[i].rshopsticks = midgard->forks[i + 1];
+		midgard->philo[i].shopsticks = &midgard->forks[i];
 		if (i == nb - 1)
-			midgard->philo[i].rshopsticks = midgard->forks[0];
+			midgard->philo[i].rshopsticks = &midgard->forks[0];
+		else
+			midgard->philo[i].rshopsticks = &midgard->forks[i + 1];
 		if (pthread_create(&midgard->th[i], NULL, &philothing, &midgard->philo[i]))
 			return (0);
 		i++;
 	}
-	while (1)
-	{
-		if (midgard->close == 1)
-			break ;
-	}
-	// pthread_detach(*th);
+	i = 0;
+	while (i < nb)
+		pthread_detach(midgard->th[i++]);
+	while (midgard->philo[i - 1].total != midgard->philo[i - 1].maxeated)
+	{}
+	printf("everyone eated \n");
 	return (1);
 }
