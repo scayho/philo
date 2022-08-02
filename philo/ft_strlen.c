@@ -6,13 +6,13 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 08:06:57 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/23 16:22:13 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:01:41 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_strlen(const char	*str)
+int	ft_strlen(char	*str)
 {
 	int	i;
 

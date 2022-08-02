@@ -6,7 +6,7 @@
 #    By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 15:26:20 by abelahce          #+#    #+#              #
-#    Updated: 2022/06/22 21:36:15 by abelahce         ###   ########.fr        #
+#    Updated: 2022/08/02 20:00:56 by abelahce         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,4 +49,3 @@ fclean: clean
 	rm -rf philo
 
 re: fclean all
-

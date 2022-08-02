@@ -6,7 +6,7 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 13:40:30 by abelahce          #+#    #+#             */
-/*   Updated: 2022/06/30 03:44:26 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:01:49 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ void	atoing(t_data *midgard, char **arv, int i)
 	midgard->teat = ft_atoi(arv[3]);
 	midgard->tsleep = ft_atoi(arv[4]);
 	midgard->nbeat = 0;
-	midgard->maxeat = 0;
+	midgard->maxeat = -1;
 	midgard->death = 1;
+	midgard->samy = 0;
 	if (i == 6)
-		midgard->maxeat = ft_atoi(arv[5]);
+		midgard->maxeat = ft_atoi(arv[5]) + 1;
 }
 
 void	indexing(t_data	*midgard)
@@ -40,17 +41,14 @@ void	indexing(t_data	*midgard)
 		midgard->philo[i].eated = wakt();
 		midgard->philo[i].start = wakt();
 		midgard->philo[i].total = 0;
-		midgard->philo[i].call = &(midgard->ccall);
+		midgard->philo[i].call = &midgard->ccall;
+		midgard->philo[i].asgard = midgard;
 		i++;
 	}
 }
 
-int	parsing(int arc, char	**arv, t_data *midgard)
+int	checking(int arc, char **arv)
 {
-	int i;
-
-	i = arc;
-	arc--;
 	while (arc > 0)
 	{
 		if (ft_strlen(arv[arc]) < 1)
@@ -65,6 +63,17 @@ int	parsing(int arc, char	**arv, t_data *midgard)
 		}
 		arc--;
 	}
+	return (1);
+}
+
+int	parsing(int arc, char	**arv, t_data *midgard)
+{
+	int	i;
+
+	i = arc;
+	arc--;
+	if (!checking(arc, arv))
+		return (0);
 	if (ft_atoi(arv[1]) < 0 || ft_atoi(arv[1]) < 0 || ft_atoi(arv[1]) < 0
 		|| ft_atoi(arv[1]) < 0)
 		return (0);

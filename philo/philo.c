@@ -6,20 +6,20 @@
 /*   By: abelahce <abelahce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 21:36:18 by abelahce          #+#    #+#             */
-/*   Updated: 2022/07/04 22:26:49 by abelahce         ###   ########.fr       */
+/*   Updated: 2022/08/02 17:21:24 by abelahce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	dormir(long long	nb)
+void	dormir(long long nb)
 {
-	long long start;
+	long long	start;
 
 	start = wakt ();
-	usleep((nb * 1000) * 0.95);
+	// usleep((nb * 1000) * 0.95);
 	while (wakt() - start < nb)
-		usleep(100);
+		usleep(50);
 }
 
 long long	wakt(void)
@@ -32,7 +32,7 @@ long long	wakt(void)
 
 void	printing(char	*str, t_philo *philo)
 {
-	pthread_mutex_lock(philo->call);	
+	pthread_mutex_lock(philo->call);
 	printf("{%lld} [%d] is %s\n", wakt() - philo->start, philo->index + 1, str);
 	pthread_mutex_unlock(philo->call);
 }
@@ -67,7 +67,10 @@ void	philocasting(t_philo *philo)
 		eating(philo);
 		philo->total++;
 		if (philo->total >= philo->maxeated)
+		{
+			philo->asgard->samy++;
 			break ;
+		}
 		sleeping(philo);
 		thinking(philo);
 	}
@@ -75,8 +78,8 @@ void	philocasting(t_philo *philo)
 
 void	philosophercult(t_philo	*philo)
 {
-	if (philo->index % 2)
-		dormir(philo->teat);
+	// if (philo->index % 2)
+	// 	dormir(philo->teat);
 	philocasting(philo);
 }
 
@@ -87,6 +90,30 @@ void	*philothing(void	*ptr)
 	philo = ptr;
 	philosophercult(philo);
 	return (NULL);
+}
+
+int	launch(t_data	*midgard, int i, int nb)
+{
+	while (i < nb)
+	{
+		if (pthread_mutex_init(&midgard->forks[i], NULL))
+			return (0);
+		i++;
+	}
+	i = 0;
+	while (i < nb)
+	{
+		midgard->philo[i].shopsticks = &midgard->forks[i];
+		if (i == nb - 1)
+			midgard->philo[i].rshopsticks = &midgard->forks[0];
+		else
+			midgard->philo[i].rshopsticks = &midgard->forks[i + 1];
+		if (pthread_create(&midgard->th[i], NULL, &philothing, &midgard->philo[i]))
+			return (0);
+		usleep (500);
+		i++;
+	}
+	return (1);
 }
 
 int	start_philo(t_data *midgard)
@@ -100,28 +127,17 @@ int	start_philo(t_data *midgard)
 	midgard->th = malloc (sizeof(pthread_t) * midgard->nb_philo);
 	if (!midgard->th)
 		exit (0);
-	while (i < nb)
-	{
-		pthread_mutex_init(&midgard->forks[i], NULL);
-		i++;
-	}
 	i = 0;
-	while (i < nb)
-	{
-		midgard->philo[i].shopsticks = &midgard->forks[i];
-		if (i == nb - 1)
-			midgard->philo[i].rshopsticks = &midgard->forks[0];
-		else
-			midgard->philo[i].rshopsticks = &midgard->forks[i + 1];
-		if (pthread_create(&midgard->th[i], NULL, &philothing, &midgard->philo[i]))
-			return (0);
-		i++;
-	}
-	i = 0;
+	if (!launch(midgard, i, nb))
+		return (free(midgard->th), 0);
 	while (i < nb)
 		pthread_detach(midgard->th[i++]);
-	while (midgard->philo[i - 1].total != midgard->philo[i - 1].maxeated)
-	{}
-	printf("everyone eated \n");
+	while (midgard->samy != midgard->maxeat)
+	{
+	}
+	printf("$%d$\n", midgard->samy);
+	pthread_mutex_lock(&midgard->ccall);
+	printf("everyone eated #{%d}#\n", midgard->samy);
 	return (1);
 }
+	
